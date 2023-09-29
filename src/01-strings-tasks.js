@@ -35,7 +35,7 @@ function concatenateStrings(value1, value2) {
  *   ''      => 0
  */
 function getStringLength(value) {
-    return value.length;
+  return value.length;
 }
 
 /**
@@ -52,7 +52,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-  return ('Hello, ' + firstName + ' ' + lastName + '!');
+  return (`Hello, ${firstName} ${lastName}!`);
 }
 
 /**
@@ -66,7 +66,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-  return value.slice (7, (value.length - 1));
+  return value.slice(7, (value.length - 1));
 }
 
 
@@ -81,7 +81,7 @@ function extractNameFromTemplate(value) {
  *   'cat'       => 'c'
  */
 function getFirstChar(value) {
-  return value.slice(0, 0);
+  return value.charAt(0);
 }
 
 /**
@@ -96,7 +96,7 @@ function getFirstChar(value) {
  *   '\tHello, World! ' => 'Hello, World!'
  */
 function removeLeadingAndTrailingWhitespaces(value) {
-    return value.trim();
+  return value.trim();
 }
 
 /**
@@ -142,7 +142,11 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.slice(1, (str.length - 2));
+  let result = '';
+  for (let i = 1; i < str.length - 1; i += 1) {
+    result += str[i];
+  }
+  return result;
 }
 
 
@@ -202,8 +206,24 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-
+function getRectangleString(width, height) {
+  let result = '┌';
+  const empty = ' ';
+  for (let i = 1; i <= width - 2; i += 1) {
+    result += '─';
+  }
+  result += '┐\n';
+  for (let i = 1; i <= (height - 2); i += 1) {
+    result += '│';
+    result += empty.repeat(width - 2);
+    result += '│\n';
+  }
+  result += '└';
+  for (let i = 1; i <= width - 2; i += 1) {
+    result += '─';
+  }
+  result += '┘\n';
+  return result;
 }
 
 
@@ -223,7 +243,18 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
+function encodeToRot13(str) {
+  let result = '';
+  const arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  const newArr = ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+  for (let i = 0; i < str.length; i += 1) {
+    if (arr.includes(str[i])) {
+      result += newArr[arr.indexOf(str[i])];
+    } else {
+      result += str[i];
+    }
+  }
+  return result;
 }
 
 /**
@@ -239,19 +270,26 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
+function isString(value) {
+  if ((value === '') || (value === undefined) || (value === null)) {
+    return false;
+  }
+  if (value.constructor.name === 'String') {
+    return true;
+  }
+  return false;
 }
 
 
 /**
- * Returns playid card id.
+ * Returns playing card id.
  *
- * Playing cards inittial deck inclides the cards in the following order:
+ * Playing cards initial deck includes the cards in the following order:
  *
  *  'A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
  *  'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
  *  'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
- *  'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'
+ *  'A♥','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'
  *
  * (see https://en.wikipedia.org/wiki/Standard_52-card_deck)
  * Function returns the zero-based index of specified card in the initial deck above.
@@ -267,7 +305,21 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
+function getCardId(value) {
+  const letterArr = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const signArr = ['♣', '♦', '♥', '♠'];
+  let result = 0;
+  if (value[1] === '0') {
+    result += 9;
+  } else {
+    result += letterArr.indexOf(value[0]);
+  }
+  if (value[1] === '0') {
+    result += (signArr.indexOf(value[2]) * 13);
+  } else {
+    result += (signArr.indexOf(value[1]) * 13);
+  }
+  return result;
 }
 
 
