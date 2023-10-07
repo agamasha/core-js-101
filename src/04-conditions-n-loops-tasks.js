@@ -299,7 +299,7 @@ function reverseInteger(num) {
  */
 function isCreditCardNumber(/* ccn */) {
   throw new Error('Not implemented');
-  /*const str = ccn.toString();
+  /* const str = ccn.toString();
   for (let i = 0; i < str.length; i += 2) {
     const m = Number(str[str.length - 1 - i]) * 2;
     if (m.toString().length === 2) {
@@ -316,7 +316,7 @@ function isCreditCardNumber(/* ccn */) {
     return true;
   }
   console.log(246890);
-  return false;*/
+  return false; */
 }
 
 /**
